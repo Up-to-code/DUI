@@ -1321,17 +1321,6 @@ const Badge = ({
     }
   };
 
-  // No need to do color check on variant: just use variant and color safely
-  // (The previous check led to type errors because variant can't be a color)
-  // Clean usage:
-  
-  return (
-    <span className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variants[variant][color]} ${className}`}>
-      {children}
-      </span>
-    );
-  }
-
   return (
     <span className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variants[variant][color]} ${className}`}>
       {children}
@@ -4569,7 +4558,7 @@ const App = () => {
       key: 'status', 
       label: 'Status',
       render: (value: string) => (
-        <Badge variant={value === 'Active' ? 'success' : 'warning'}>{value}</Badge>
+        <Badge variant={value === 'Active' ? 'solid' : 'outline'}>{value}</Badge>
       )
     }
   ];
