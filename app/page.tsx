@@ -1321,12 +1321,13 @@ const Badge = ({
     }
   };
 
-  // Check if variant is actually a color
-  if (variant === 'primary' || variant === 'secondary' || variant === 'success' || variant === 'warning' || variant === 'error' || variant === 'info') {
-    // If variant is a color, use it as the color and default to 'solid' variant
-    return (
-      <span className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variants.solid[variant]} ${className}`}>
-        {children}
+  // No need to do color check on variant: just use variant and color safely
+  // (The previous check led to type errors because variant can't be a color)
+  // Clean usage:
+  
+  return (
+    <span className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variants[variant][color]} ${className}`}>
+      {children}
       </span>
     );
   }
