@@ -1,0 +1,20 @@
+OPTIMIZE_API_KEY="eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJ3aWQiOiJjbHc5d3I5NXowMGJnM3owdDV0NzdqNDliIiwidWlkIjoiY2x3OXdyOHFyMDBiYzN6MHQ3NjRiaWV1dSIsInRzIjoxNzYxNzAxOTQ0NzE5fQ.30NqFJhNa3RVflvCkMJ9NnG6x3yQx6pb5ZoJq7i_b24R-UwiB0MuMsJVdUPPA8EyQfsUV_vbxZnKaK7Kw-XFCw"
+
+
+
+
+npm install @prisma/client@^6 
+@prisma/extension-optimize @prisma/instrumentation@^6 
+npm install --save-dev prisma@^6
+
+
+
+import { PrismaClient } from "@prisma/client";
+import { withOptimize } from "@prisma/extension-optimize";
+
+const prisma = new PrismaClient().$extends(
+  withOptimize({ apiKey: process.env.OPTIMIZE_API_KEY })
+)
+
+
+npx prisma generate
