@@ -3123,6 +3123,293 @@ const Faq = ({ title, description, items, className = '' }: FaqProps) => {
 };
 
 // ==============================
+// LAYOUT SIDEBAR COMPONENT
+// ==============================
+interface LayoutSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const LayoutSidebar = ({ children, className = '' }: LayoutSidebarProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  const sidebarItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: <span>📊</span>,
+      active: true
+    },
+    {
+      id: 'projects',
+      label: 'Projects',
+      icon: <span>📁</span>,
+      badge: 5
+    },
+    {
+      id: 'team',
+      label: 'Team',
+      icon: <span>👥</span>
+    },
+    {
+      id: 'calendar',
+      label: 'Calendar',
+      icon: <span>📅</span>
+    },
+    {
+      id: 'documents',
+      label: 'Documents',
+      icon: <span>📄</span>
+    },
+    {
+      id: 'reports',
+      label: 'Reports',
+      icon: <span>📈</span>
+    }
+  ];
+
+  return (
+    <div className={`flex h-screen bg-gray-100 ${className}`}>
+      <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-white shadow-md transition-all duration-300`}>
+        <div className="flex items-center justify-between p-4 border-b">
+          {!isCollapsed && <h2 className="text-lg font-semibold text-gray-800">SaaS App</h2>}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1 rounded hover:bg-gray-100"
+          >
+            {isCollapsed ? <span>→</span> : <span>←</span>}
+          </button>
+        </div>
+        <nav className="mt-4">
+          {sidebarItems.map((item) => (
+            <a
+              key={item.id}
+              href="#"
+              className={`flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 ${
+                item.active ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''
+              }`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              {!isCollapsed && (
+                <>
+                  <span className="ml-3">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </>
+              )}
+            </a>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ==============================
+// SETTINGS SIDEBAR COMPONENT
+// ==============================
+interface SettingsSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SettingsSidebar = ({ children, className = '' }: SettingsSidebarProps) => {
+  const [activeTab, setActiveTab] = useState('profile');
+  
+  const sidebarItems = [
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: <span>👤</span>
+    },
+    {
+      id: 'account',
+      label: 'Account',
+      icon: <span>🔐</span>
+    },
+    {
+      id: 'notifications',
+      label: 'Notifications',
+      icon: <span>🔔</span>
+    },
+    {
+      id: 'security',
+      label: 'Security',
+      icon: <span>🔒</span>
+    },
+    {
+      id: 'billing',
+      label: 'Billing',
+      icon: <span>💳</span>
+    },
+    {
+      id: 'integrations',
+      label: 'Integrations',
+      icon: <span>🔗</span>
+    }
+  ];
+
+  return (
+    <div className={`flex h-screen bg-gray-100 ${className}`}>
+      <div className="w-64 bg-white shadow-md">
+        <div className="p-4 border-b">
+          <h2 className="text-lg font-semibold text-gray-800">Settings</h2>
+        </div>
+        <nav className="mt-4">
+          {sidebarItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 ${
+                activeTab === item.id ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''
+              }`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span className="ml-3">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            {sidebarItems.find(item => item.id === activeTab)?.label}
+          </h1>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==============================
+// DASHBOARD SIDEBAR COMPONENT
+// ==============================
+interface DashboardSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const DashboardSidebar = ({ children, className = '' }: DashboardSidebarProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState('overview');
+  
+  const sidebarSections = [
+    {
+      title: 'Main',
+      items: [
+        {
+          id: 'overview',
+          label: 'Overview',
+          icon: <span>📊</span>
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: <span>📈</span>
+        }
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
+        {
+          id: 'users',
+          label: 'Users',
+          icon: <span>👥</span>,
+          badge: 12
+        },
+        {
+          id: 'projects',
+          label: 'Projects',
+          icon: <span>📁</span>,
+          badge: 5
+        },
+        {
+          id: 'tasks',
+          label: 'Tasks',
+          icon: <span>✅</span>,
+          badge: 3
+        }
+      ]
+    },
+    {
+      title: 'Settings',
+      items: [
+        {
+          id: 'profile',
+          label: 'Profile',
+          icon: <span>👤</span>
+        },
+        {
+          id: 'settings',
+          label: 'Settings',
+          icon: <span>⚙️</span>
+        }
+      ]
+    }
+  ];
+
+  return (
+    <div className={`flex h-screen bg-gray-100 ${className}`}>
+      <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-white shadow-md transition-all duration-300`}>
+        <div className="flex items-center justify-between p-4 border-b">
+          {!isCollapsed && <h2 className="text-lg font-semibold text-gray-800">Dashboard</h2>}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1 rounded hover:bg-gray-100"
+          >
+            {isCollapsed ? <span>→</span> : <span>←</span>}
+          </button>
+        </div>
+        <nav className="mt-4">
+          {sidebarSections.map((section) => (
+            <div key={section.title} className="mb-6">
+              {!isCollapsed && (
+                <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  {section.title}
+                </h3>
+              )}
+              {section.items.map((item) => (
+                <a
+                  key={item.id}
+                  href="#"
+                  onClick={() => setActiveItem(item.id)}
+                  className={`flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 ${
+                    activeItem === item.id ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''
+                  }`}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  {!isCollapsed && (
+                    <>
+                      <span className="ml-3">{item.label}</span>
+                      {item.badge && (
+                        <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </a>
+              ))}
+            </div>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ==============================
 // CODE EXAMPLES
 // ==============================
 const ButtonComponentCode = `// TypeScript Interface
@@ -4235,7 +4522,6 @@ const Faq = ({ title, description, items, className = '' }: FaqProps) => {
 // ==============================
 const App = () => {
   const [activeComponent, setActiveComponent] = useState('button');
-  const [activeTab, setActiveTab] = useState('components');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -4875,6 +5161,31 @@ const App = () => {
       icon: <span>✨</span>,
       active: activeComponent === 'featurecard',
       onClick: () => setActiveComponent('featurecard'),
+      category: 'blocks'
+    },
+    // Layout Blocks
+    {
+      id: 'layoutsidebar',
+      label: 'Layout Sidebar',
+      icon: <span>🖥️</span>,
+      active: activeComponent === 'layoutsidebar',
+      onClick: () => setActiveComponent('layoutsidebar'),
+      category: 'blocks'
+    },
+    {
+      id: 'settingssidebar',
+      label: 'Settings Sidebar',
+      icon: <span>⚙️</span>,
+      active: activeComponent === 'settingssidebar',
+      onClick: () => setActiveComponent('settingssidebar'),
+      category: 'blocks'
+    },
+    {
+      id: 'dashboardsidebar',
+      label: 'Dashboard Sidebar',
+      icon: <span>📊</span>,
+      active: activeComponent === 'dashboardsidebar',
+      onClick: () => setActiveComponent('dashboardsidebar'),
       category: 'blocks'
     }
   ];
@@ -7617,7 +7928,7 @@ const KpiCard = ({ title, value, change, icon, className = '' }: KpiCardProps) =
   title="Conversion Rate"
   value="3.2%"
   change={{ value: "2.1%", type: "decrease" }}
-  icon={<span>📈</span>}
+  icon={<span>📈</span}/>
 />`} />
           </div>
         );
@@ -8687,6 +8998,521 @@ const Image = ({ src, fallback, alt, className = '', ...props }: ImageProps) => 
           </div>
         );
       
+      case 'layoutsidebar':
+        return (
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <h2 className="text-xl font-semibold mb-4">Layout Sidebar Component</h2>
+            <div className="mb-6">
+              <LayoutSidebar>
+                <div className="p-6">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard</h1>
+                  <p className="text-gray-600 mb-6">Welcome to your dashboard. Here's what's happening with your projects today.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <Card>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">Active Projects</h3>
+                      <p className="text-3xl font-bold text-blue-600">12</p>
+                    </Card>
+                    <Card>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">Completed Tasks</h3>
+                      <p className="text-3xl font-bold text-green-600">24</p>
+                    </Card>
+                    <Card>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">Team Members</h3>
+                      <p className="text-3xl font-bold text-purple-600">8</p>
+                    </Card>
+                  </div>
+                </div>
+              </LayoutSidebar>
+            </div>
+            <h3 className="text-lg font-medium mb-3">Component Code:</h3>
+            <CodeBlock code={`// TypeScript Interface
+interface LayoutSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+// Component Implementation
+const LayoutSidebar = ({ children, className = '' }: LayoutSidebarProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  const sidebarItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: <span>📊</span>,
+      active: true
+    },
+    {
+      id: 'projects',
+      label: 'Projects',
+      icon: <span>📁</span>,
+      badge: 5
+    },
+    {
+      id: 'team',
+      label: 'Team',
+      icon: <span>👥</span>
+    },
+    {
+      id: 'calendar',
+      label: 'Calendar',
+      icon: <span>📅</span>
+    },
+    {
+      id: 'documents',
+      label: 'Documents',
+      icon: <span>📄</span>
+    },
+    {
+      id: 'reports',
+      label: 'Reports',
+      icon: <span>📈</span>
+    }
+  ];
+
+  return (
+    <div className={\`flex h-screen bg-gray-100 \${className}\`}>
+      <div className={\`\${isCollapsed ? 'w-16' : 'w-64'} bg-white shadow-md transition-all duration-300\`}>
+        <div className="flex items-center justify-between p-4 border-b">
+          {!isCollapsed && <h2 className="text-lg font-semibold text-gray-800">SaaS App</h2>}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1 rounded hover:bg-gray-100"
+          >
+            {isCollapsed ? <span>→</span> : <span>←</span>}
+          </button>
+        </div>
+        <nav className="mt-4">
+          {sidebarItems.map((item) => (
+            <a
+              key={item.id}
+              href="#"
+              className={\`flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 \${item.active ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''}\`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              {!isCollapsed && (
+                <>
+                  <span className="ml-3">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </>
+              )}
+            </a>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// Usage Examples
+<LayoutSidebar>
+  <div className="p-6">
+    <h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard</h1>
+    <p className="text-gray-600 mb-6">Welcome to your dashboard. Here's what's happening with your projects today.</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Card>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Active Projects</h3>
+        <p className="text-3xl font-bold text-blue-600">12</p>
+      </Card>
+      <Card>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Completed Tasks</h3>
+        <p className="text-3xl font-bold text-green-600">24</p>
+      </Card>
+      <Card>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Team Members</h3>
+        <p className="text-3xl font-bold text-purple-600">8</p>
+      </Card>
+    </div>
+  </div>
+</LayoutSidebar>`} />
+          </div>
+        );
+      
+      case 'settingssidebar':
+        return (
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <h2 className="text-xl font-semibold mb-4">Settings Sidebar Component</h2>
+            <div className="mb-6">
+              <SettingsSidebar>
+                <div className="p-6">
+                  <p className="text-gray-600 mb-4">Manage your account settings and preferences.</p>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">Email Notifications</span>
+                      <Toggle checked={true} onChange={() => {}} />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">Two-Factor Authentication</span>
+                      <Toggle checked={false} onChange={() => {}} />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">Profile Visibility</span>
+                      <Select 
+                        options={[
+                          { value: 'public', label: 'Public' },
+                          { value: 'private', label: 'Private' }
+                        ]}
+                        value="public"
+                        onChange={() => {}}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </SettingsSidebar>
+            </div>
+            <h3 className="text-lg font-medium mb-3">Component Code:</h3>
+            <CodeBlock code={`// TypeScript Interface
+interface SettingsSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+// Component Implementation
+const SettingsSidebar = ({ children, className = '' }: SettingsSidebarProps) => {
+  const [activeTab, setActiveTab] = useState('profile');
+  
+  const sidebarItems = [
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: <span>👤</span>
+    },
+    {
+      id: 'account',
+      label: 'Account',
+      icon: <span>🔐</span>
+    },
+    {
+      id: 'notifications',
+      label: 'Notifications',
+      icon: <span>🔔</span>
+    },
+    {
+      id: 'security',
+      label: 'Security',
+      icon: <span>🔒</span>
+    },
+    {
+      id: 'billing',
+      label: 'Billing',
+      icon: <span>💳</span>
+    },
+    {
+      id: 'integrations',
+      label: 'Integrations',
+      icon: <span>🔗</span>
+    }
+  ];
+
+  return (
+    <div className={\`flex h-screen bg-gray-100 \${className}\`}>
+      <div className="w-64 bg-white shadow-md">
+        <div className="p-4 border-b">
+          <h2 className="text-lg font-semibold text-gray-800">Settings</h2>
+        </div>
+        <nav className="mt-4">
+          {sidebarItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={\`w-full flex items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 \${activeTab === item.id ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''}\`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span className="ml-3">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            {sidebarItems.find(item => item.id === activeTab)?.label}
+          </h1>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Usage Examples
+<SettingsSidebar>
+  <div className="p-6">
+    <p className="text-gray-600 mb-4">Manage your account settings and preferences.</p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <span className="text-gray-700">Email Notifications</span>
+        <Toggle checked={true} onChange={() => {}} />
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-gray-700">Two-Factor Authentication</span>
+        <Toggle checked={false} onChange={() => {}} />
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-gray-700">Profile Visibility</span>
+        <Select 
+          options={[
+            { value: 'public', label: 'Public' },
+            { value: 'private', label: 'Private' }
+          ]}
+          value="public"
+          onChange={() => {}}
+        />
+      </div>
+    </div>
+  </div>
+</SettingsSidebar>`} />
+          </div>
+        );
+      
+      case 'dashboardsidebar':
+        return (
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <h2 className="text-xl font-semibold mb-4">Dashboard Sidebar Component</h2>
+            <div className="mb-6">
+              <DashboardSidebar>
+                <div className="p-6">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h1>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <Card>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Total Revenue</h3>
+                      <p className="text-2xl font-bold text-gray-900">$45,231</p>
+                      <p className="text-xs text-green-600">+12.5%</p>
+                    </Card>
+                    <Card>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Active Users</h3>
+                      <p className="text-2xl font-bold text-gray-900">2,543</p>
+                      <p className="text-xs text-green-600">+8.2%</p>
+                    </Card>
+                    <Card>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Conversion Rate</h3>
+                      <p className="text-2xl font-bold text-gray-900">3.2%</p>
+                      <p className="text-xs text-red-600">-2.1%</p>
+                    </Card>
+                    <Card>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Avg. Session</h3>
+                      <p className="text-2xl font-bold text-gray-900">5m 42s</p>
+                      <p className="text-xs text-green-600">+18s</p>
+                    </Card>
+                  </div>
+                  <div className="bg-white rounded-lg shadow p-4">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center">
+                        <Avatar fallback="JD" size="sm" className="mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">John Doe</p>
+                          <p className="text-xs text-gray-500">Created a new project</p>
+                        </div>
+                        <span className="text-xs text-gray-400 ml-auto">2 hours ago</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Avatar fallback="JS" size="sm" className="mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Jane Smith</p>
+                          <p className="text-xs text-gray-500">Completed a task</p>
+                        </div>
+                        <span className="text-xs text-gray-400 ml-auto">5 hours ago</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Avatar fallback="BJ" size="sm" className="mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Bob Johnson</p>
+                          <p className="text-xs text-gray-500">Updated profile</p>
+                        </div>
+                        <span className="text-xs text-gray-400 ml-auto">1 day ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </DashboardSidebar>
+            </div>
+            <h3 className="text-lg font-medium mb-3">Component Code:</h3>
+            <CodeBlock code={`// TypeScript Interface
+interface DashboardSidebarProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+// Component Implementation
+const DashboardSidebar = ({ children, className = '' }: DashboardSidebarProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState('overview');
+  
+  const sidebarSections = [
+    {
+      title: 'Main',
+      items: [
+        {
+          id: 'overview',
+          label: 'Overview',
+          icon: <span>📊</span>
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: <span>📈</span>
+        }
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
+        {
+          id: 'users',
+          label: 'Users',
+          icon: <span>👥</span>,
+          badge: 12
+        },
+        {
+          id: 'projects',
+          label: 'Projects',
+          icon: <span>📁</span>,
+          badge: 5
+        },
+        {
+          id: 'tasks',
+          label: 'Tasks',
+          icon: <span>✅</span>,
+          badge: 3
+        }
+      ]
+    },
+    {
+      title: 'Settings',
+      items: [
+        {
+          id: 'profile',
+          label: 'Profile',
+          icon: <span>👤</span>
+        },
+        {
+          id: 'settings',
+          label: 'Settings',
+          icon: <span>⚙️</span>
+        }
+      ]
+    }
+  ];
+
+  return (
+    <div className={\`flex h-screen bg-gray-100 \${className}\`}>
+      <div className={\`\${isCollapsed ? 'w-16' : 'w-64'} bg-white shadow-md transition-all duration-300\`}>
+        <div className="flex items-center justify-between p-4 border-b">
+          {!isCollapsed && <h2 className="text-lg font-semibold text-gray-800">Dashboard</h2>}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1 rounded hover:bg-gray-100"
+          >
+            {isCollapsed ? <span>→</span> : <span>←</span>}
+          </button>
+        </div>
+        <nav className="mt-4">
+          {sidebarSections.map((section) => (
+            <div key={section.title} className="mb-6">
+              {!isCollapsed && (
+                <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  {section.title}
+                </h3>
+              )}
+              {section.items.map((item) => (
+                <a
+                  key={item.id}
+                  href="#"
+                  onClick={() => setActiveItem(item.id)}
+                  className={\`flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 \${activeItem === item.id ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ''}\`}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  {!isCollapsed && (
+                    <>
+                      <span className="ml-3">{item.label}</span>
+                      {item.badge && (
+                        <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </a>
+              ))}
+            </div>
+          ))}
+        </nav>
+      </div>
+      <div className="flex-1 overflow-auto">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// Usage Examples
+<DashboardSidebar>
+  <div className="p-6">
+    <h1 className="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <Card>
+        <h3 className="text-sm font-medium text-gray-500 mb-1">Total Revenue</h3>
+        <p className="text-2xl font-bold text-gray-900">$45,231</p>
+        <p className="text-xs text-green-600">+12.5%</p>
+      </Card>
+      <Card>
+        <h3 className="text-sm font-medium text-gray-500 mb-1">Active Users</h3>
+        <p className="text-2xl font-bold text-gray-900">2,543</p>
+        <p className="text-xs text-green-600">+8.2%</p>
+      </Card>
+      <Card>
+        <h3 className="text-sm font-medium text-gray-500 mb-1">Conversion Rate</h3>
+        <p className="text-2xl font-bold text-gray-900">3.2%</p>
+        <p className="text-xs text-red-600">-2.1%</p>
+      </Card>
+      <Card>
+        <h3 className="text-sm font-medium text-gray-500 mb-1">Avg. Session</h3>
+        <p className="text-2xl font-bold text-gray-900">5m 42s</p>
+        <p className="text-xs text-green-600">+18s</p>
+      </Card>
+    </div>
+    <div className="bg-white rounded-lg shadow p-4">
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+      <div className="space-y-3">
+        <div className="flex items-center">
+          <Avatar fallback="JD" size="sm" className="mr-3" />
+          <div>
+            <p className="text-sm font-medium text-gray-900">John Doe</p>
+            <p className="text-xs text-gray-500">Created a new project</p>
+          </div>
+          <span className="text-xs text-gray-400 ml-auto">2 hours ago</span>
+        </div>
+        <div className="flex items-center">
+          <Avatar fallback="JS" size="sm" className="mr-3" />
+          <div>
+            <p className="text-sm font-medium text-gray-900">Jane Smith</p>
+            <p className="text-xs text-gray-500">Completed a task</p>
+          </div>
+          <span className="text-xs text-gray-400 ml-auto">5 hours ago</span>
+        </div>
+        <div className="flex items-center">
+          <Avatar fallback="BJ" size="sm" className="mr-3" />
+          <div>
+            <p className="text-sm font-medium text-gray-900">Bob Johnson</p>
+            <p className="text-xs text-gray-500">Updated profile</p>
+          </div>
+          <span className="text-xs text-gray-400 ml-auto">1 day ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</DashboardSidebar>`} />
+          </div>
+        );
+      
       default:
         return null;
     }
@@ -8708,16 +9534,6 @@ const Image = ({ src, fallback, alt, className = '', ...props }: ImageProps) => 
               <p className="text-gray-600">
                 A comprehensive component library for SaaS applications with TypeScript and Tailwind CSS.
               </p>
-            </div>
-            
-            <div className="mb-8">
-              <Tabs 
-                tabs={[
-                  { id: 'components', label: 'Components' },
-                  { id: 'blocks', label: 'Blocks' }
-                ]} 
-                defaultTab="components"
-              />
             </div>
             
             {renderComponent()}
